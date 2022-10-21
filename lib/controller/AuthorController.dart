@@ -32,4 +32,11 @@ class AuthorController extends GetxController{
     ApiRepository().authorList(limit);
     return data;
   }
+
+  Future<AuthorListResponse> getAuthorData(String name){
+    Future<AuthorListResponse> data;
+    data =
+        ApiRepository().searchAuthorData(name);
+    return data;
+  }
 }

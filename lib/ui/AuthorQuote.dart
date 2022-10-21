@@ -78,6 +78,11 @@ class _AuthorQuoteState extends State<AuthorQuote> {
                     labelText: "Author Name", onTap: () {
                     searchController.text.isNotEmpty ? getAuthorData() : Fluttertoast.showToast(msg: "Please enter Author name", backgroundColor: Colors.red);
                   },
+                    onChanged: (value){
+                      value.isEmpty
+                          ? getAuthor(true)
+                          : null;
+                    },
                   ),
                 ),
               ],
@@ -282,5 +287,15 @@ class _AuthorQuoteState extends State<AuthorQuote> {
     await launchUrl(Uri.parse(url));
   }
 
-  void getAuthorData() {}
+  void getAuthorData() {
+    authorController.updateLoading(true);
+    authorController.getAuthorData(searchController.text.toString()).then((response) {
+        authorController.authorList.clear();
+      if(response.results!.isNotEmpty){
+        authorController.updateList(response.results!);
+        authorController.updateLoading(false);
+      }
+        authorController.updateLoading(false);
+    });
+    }
 }
